@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import './App.css';
 import Footer from './components/Footer/index';
 import Header from './components/Header/index';
@@ -11,7 +10,8 @@ function App() {
     <>
     <Header
       title="Header"
-      descr="Description"/>
+      descr="Description"
+      />
     <Layout
       title="Layout 1"
       descr="Description"
@@ -20,7 +20,8 @@ function App() {
     <Layout
       title="Layout 2"
       descr="Description"
-      colorBg= "orange"/>
+      colorBg= "orange"
+      />
     <Layout
       title="Layout 3"
       descr="Description"

@@ -1,6 +1,6 @@
 import style from './style.module.css'
 
-function Layout({title, descr, urlBg, colorBg}) {
+function Layout({title='Title defaults', descr='Description defaults', urlBg, colorBg}) {
 
     return (
         <section
