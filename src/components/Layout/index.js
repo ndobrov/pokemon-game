@@ -1,10 +1,12 @@
 import style from './style.module.css'
 
 function Layout({title='Title defaults', descr='Description defaults', urlBg, colorBg}) {
-
+            console.log(urlBg)
+    const stylesImg = urlBg? {background:`url(${urlBg})`} : {background:`${colorBg}`}
+       
     return (
         <section
-            style={urlBg?{backgroundImage:urlBg}:{background:colorBg}} 
+            style={stylesImg} 
             className={style.root}>
             <div className={style.wrapper}>
                 <article>

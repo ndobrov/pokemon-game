@@ -15,7 +15,8 @@ function App() {
     <Layout
       title="Layout 1"
       descr="Description"
-      urlBg={`url(${url})`}
+      // urlBg={`url(${url})`}
+      urlBg={url}
       />
     <Layout
       title="Layout 2"
@@ -25,7 +26,9 @@ function App() {
     <Layout
       title="Layout 3"
       descr="Description"
-      urlBg={`url(${url2})`}
+      // urlBg={`url(${url2})`}
+      colorBg= "red"
+      urlBg={url2}
       />
     <Footer/>
     </>
