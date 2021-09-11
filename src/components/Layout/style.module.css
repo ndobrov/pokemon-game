@@ -1,4 +1,9 @@
 .root {
+<<<<<<< HEAD
+=======
+    height: 100%;
+    min-height: 100vh;
+>>>>>>> master
     font-size: 1.4rem;
     position: relative;
     background: #fafafa;
@@ -8,7 +13,13 @@
 }
 
 .root .wrapper {
+<<<<<<< HEAD
     padding: 5rem 1rem 2rem;
+=======
+    padding: 15rem 10rem 12rem;
+    height: 100%;
+    min-height: 100vh;
+>>>>>>> master
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -63,9 +74,12 @@
     padding: 2rem;
     text-align: justify;
 }
+<<<<<<< HEAD
 p {
     text-indent: 20px; 
    }
+=======
+>>>>>>> master
 
 @media only screen and (max-width: 1149px) {
     .root article {

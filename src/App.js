@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import s from'./App.module.css';
 
 import Footer from './components/Footer/index';
@@ -143,6 +144,14 @@ const POKEMONS = [
     }
   }
 ]
+=======
+import './App.css';
+import Footer from './components/Footer/index';
+import Header from './components/Header/index';
+import Layout from './components/Layout/index';
+import url from './assets/bj2.jpg'
+import url2 from './assets/bj3.jpg'
+>>>>>>> master
 
 function App() {
 
@@ -154,6 +163,7 @@ const pokemonList = POKEMONS.map((item)=>
     <>
     <Header
       title="Header"
+<<<<<<< HEAD
       />
     <Layout
       id="rules"
@@ -187,6 +197,28 @@ const pokemonList = POKEMONS.map((item)=>
         <p>To win, a majority of the total ten cards played (including the one card that is not placed on the board) must be of the player's card color. To do this, the player must capture cards by placing a card adjacent to an opponent's card whereupon the 'ranks' of the sides where the two cards touch will be compared. If the rank of the opponent's card is higher than the player's card, the player's card will be captured and turned into the opponent's color. If the player's rank is higher, the opponent's card will be captured and changed into the player's color instead. </p>
         
     </Layout>
+=======
+      descr="Description"
+      />
+    <Layout
+      title="Layout 1"
+      descr="Description"
+      // urlBg={`url(${url})`}
+      urlBg={url}
+      />
+    <Layout
+      title="Layout 2"
+      descr="Description"
+      colorBg= "orange"
+      />
+    <Layout
+      title="Layout 3"
+      descr="Description"
+      // urlBg={`url(${url2})`}
+      colorBg= "red"
+      urlBg={url2}
+      />
+>>>>>>> master
     <Footer/>
     </>
   );
