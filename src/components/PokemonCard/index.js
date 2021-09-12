@@ -3,8 +3,7 @@ import { useState } from 'react';
 import s from './style.module.css'
 import cardBackSide from './assets/card-back-side.jpg'
 
-const PokemonCard = ({item}) => {
-    const{name, img, id, type, values} = item;
+const PokemonCard = ({name, img, id, type, values}) => {
 
     const[isActive, setIsActive] = useState(false);
 
