@@ -1,13 +1,23 @@
 import style from './style.module.css'
 
-function Layout({title='Title defaults', descr='Description defaults', urlBg, colorBg}) {
-            console.log(urlBg)
-    const stylesImg = urlBg? {background:`url(${urlBg})`} : {background:`${colorBg}`}
+function Layout({id, title='Title defaults', urlBg, colorBg, children}) {
+
+    // const stylesImg = urlBg? {background:`url(${urlBg})`} : {background:`${colorBg}`}
+       const stylesImg = {}
        
+       if(urlBg) {
+           stylesImg.backgroundImage = `url(${urlBg})`;
+       }
+
+       if(colorBg) {
+           stylesImg.backgroundColor = colorBg;
+        }
+
     return (
         <section
             style={stylesImg} 
-            className={style.root}>
+            className={style.root}
+            id={id}>
             <div className={style.wrapper}>
                 <article>
                     <div className={style.title}>
@@ -15,7 +25,7 @@ function Layout({title='Title defaults', descr='Description defaults', urlBg, co
                         <span className={style.separator}></span>
                     </div>
                     <div className={`${style.desc} ${style.full}`}>
-                        <p>{descr}</p>
+                        {children}
                     </div>
                 </article>
             </div>
