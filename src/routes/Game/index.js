@@ -10,7 +10,6 @@ import POKEMONS from '../../db.json'
 const GamePage = () => {
 
      const[pokemons, setPokemons] = useState(POKEMONS);
-    //  setPokemons(POKEMONS);
 
     const handlerClick = (id) => {
         // way 1
@@ -52,8 +51,5 @@ const GamePage = () => {
         </>
     );
 };
-
-
-
 
 export default GamePage;
