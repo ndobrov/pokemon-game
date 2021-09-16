@@ -6,21 +6,25 @@ import NavBar from "../Navbar";
 // import s from './style.module.css'
 // import cn from 'classnames';
 
-function MenuHeader() {
-
-    const[isActive, setIsActive] = useState(false);
+function MenuHeader({bgActive}) {
+    console.log("MenuHeader", bgActive);
+    const[isActive, setIsActive] = useState(null);
 
     const handlerClick = () => {
-        setIsActive(!isActive);
+        setIsActive(prevState => !prevState);
 }
 
     return (
         <>
             <Menu
-                isActive={isActive}/>
+                isActive={isActive}
+                changeActive={handlerClick}
+                />
             <NavBar
                 isActive={isActive}
-                changeActive={handlerClick}/>
+                bgActive={bgActive}
+                changeActive={handlerClick}
+                />
         </>
     )
 }
