@@ -7,7 +7,6 @@ import NavBar from "../Navbar";
 // import cn from 'classnames';
 
 function MenuHeader({bgActive}) {
-    console.log("MenuHeader", bgActive);
     const[isActive, setIsActive] = useState(null);
 
     const handlerClick = () => {

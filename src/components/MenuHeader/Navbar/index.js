@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 
 function NavBar({isActive, bgActive=false, changeActive}) {
-    console.log(bgActive);
+    
     return (
         <nav  id={s.navbar} className={cn(s.root, {
             [s.bgActive] : bgActive

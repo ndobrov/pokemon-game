@@ -14,8 +14,6 @@ import s from './style.module.css'
 
 const App = () => {
   const match = useRouteMatch('/');
-  console.log(match)
-
 
   return (
       <Switch>
