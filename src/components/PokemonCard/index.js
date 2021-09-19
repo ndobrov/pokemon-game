@@ -5,16 +5,18 @@ import cardBackSide from './assets/card-back-side.jpg';
 import s from './style.module.css'
 
 
-const PokemonCard = ({name, img, id, type, values, active, onChangePokemon}) => {
-
+const PokemonCard = ({name, img, id, type, values, onChangePokemon, objID, active}) => {
 
     const handlerClick = () => {
-        onChangePokemon && onChangePokemon(id);
+        onChangePokemon && onChangePokemon(id, objID);
     }
+    
     return (
-        <div className={s.root} onClick={handlerClick}>
-            <div className={cn(s.pokemonCard, {
-                [s.active]: active === true })}>
+        <div className={s.root} >
+            <div 
+                onClick={handlerClick}
+                className={cn(s.pokemonCard, {
+                [s.active]:active })}>
                 <div className={s.cardFront}> 
                     <div className={cn(s.wrap, s.front)}>
                         <div className={cn(s.pokemon, s[type])}>
@@ -44,7 +46,6 @@ const PokemonCard = ({name, img, id, type, values, active, onChangePokemon}) => 
 
             </div>
         </div>
-        
     )    
 }
 

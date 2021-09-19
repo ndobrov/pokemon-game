@@ -10,4 +10,5 @@ h3 {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-  }
+    padding: 60px;
+}
