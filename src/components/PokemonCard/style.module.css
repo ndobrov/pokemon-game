@@ -18,10 +18,13 @@
     transform-style: preserve-3d;
     transition: .6s .1s;
     transform: rotateY(180deg);
+    height: -webkit-fill-available;
+    min-width: 100%;
 }
 
 .pokemonCard.active {
-    animation: flipFront 1000ms 300ms forwards;
+    transform: rotateY(0deg);
+    /* animation: flipFront 1000ms 300ms forwards; */
 }
 
 @keyframes flipFront {
@@ -162,6 +165,12 @@
 }
 .normal {
     background-color: var(--normal);
+}
+.red {
+    background-color: #d998b2;
+}
+.blue {
+    background-color: #a8caea;
 }
 
 .pokemon .imgContainer {
