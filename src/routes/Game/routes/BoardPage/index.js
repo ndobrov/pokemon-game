@@ -24,7 +24,7 @@ const counterWin = (board, player1, player2) => {
 }
 
 const BoardPage = () => {
-    const { pokemons }= useContext(PokemonContext);
+    const { pokemons, pokemonsPlayer2, onPokemonsTwoPlayer }= useContext(PokemonContext);
 
     const [ board, setBoard ] = useState([]);
     const [ player1, setPlaer1 ] = useState(() => {
@@ -53,9 +53,9 @@ const BoardPage = () => {
                     possession: 'red',
                 }))
             });
+            onPokemonsTwoPlayer( player2Request.data);
         }
         fetchData();
-
     }, []);
 
     if ( Object.keys(pokemons).length === 0) {
@@ -96,7 +96,7 @@ const BoardPage = () => {
 
                     return count;
                 })
-                console.log(steps)
+                // console.log(steps)
                 
         }
     } 
@@ -104,7 +104,7 @@ const BoardPage = () => {
     useEffect(() => {
             if (steps === 9) {
                 const [count1, count2] = counterWin(board, player1, player2);
-                console.log(count1, count2)
+                // console.log(count1, count2)
                 if (count1 > count2) {
                     alert('WIM');
                 } else if (count1 < count2) {
@@ -112,8 +112,13 @@ const BoardPage = () => {
                 } else {
                     alert('DRAW');
                 }
+            history.push('/game/finish');
+
             }
     }, [steps])
+
+    // const hendlerStartGameClick =  () => {
+    //     history.push('/game/board');
 
     return (
         <div className={s.root}>

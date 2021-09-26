@@ -1,0 +1,39 @@
+/* .finish {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;  */
+
+/* } */
+
+.flex {
+    display: flex;
+    /* position: relative; */
+    height: 33vh;
+    /* height: 200px; */
+    min-width: 25vw;
+    margin:-4vh 35px 18vh;
+    padding: 8px 4px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+.card{
+    max-width: 16vw;
+}
+
+.buttonWrap {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    top: calc(50% - 22px);
+    height: 45px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+

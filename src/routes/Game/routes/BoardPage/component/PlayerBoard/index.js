@@ -4,14 +4,15 @@ import PokemonCard from '../../../../../../components/PokemonCard';
 import cn from 'classnames';
 import s from './style.module.css';
 
-const PlayerBoard = ({player, cards, onClickCard}) => {
+const PlayerBoard = ({player, cards, onClickCard, className, minimize="true"}) => {
 
     const [isSelected, setisSelected] = useState(null);
+    // console.log('cards', cards)
     return (
         <>
             {
-                cards && cards.length ? cards.map((item, index) => (
-                    <div className={cn(s.cardBoard, {
+                cards && cards.length ? cards.map(item => (
+                    <div className={cn(className, s.cardBoard, {
                         [s.selected]: isSelected === item.id
                     })}
 
@@ -31,7 +32,7 @@ const PlayerBoard = ({player, cards, onClickCard}) => {
                         values={item.values}
                         type={item.type}
                         active
-                        minimize
+                        minimize={minimize}
                         />
                     </div>
                 ))  : <span> No player)</span>

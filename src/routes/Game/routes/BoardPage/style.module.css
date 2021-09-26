@@ -35,14 +35,14 @@
     position: absolute;
     top: 4.3vw;
     left: 5vw;
-    width: 17vw;
-    height: 50.3vw;
+    width: 15vw;
+    height: 35vh;
 }
 
 .playerTwo {
     position: absolute;
     top: 4.3vw;
     right: 5vw;
-    width: 17vw;
-    height: 50.3vw;
+    width: 15vw;
+    height: 35vh;
 }

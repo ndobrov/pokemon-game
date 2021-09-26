@@ -63,7 +63,6 @@ const StartPage = () => {
                         onClick={hendlerStartGameClick}
                         disabled={Object.keys(pokemonsContext.pokemons).length < 5}
                         >
-                        {/* ADD NEW POKEMON */}
                         START GAME
                     </button>
                     <div className={s.flex}>{}
