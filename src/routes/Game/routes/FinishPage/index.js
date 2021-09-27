@@ -34,17 +34,17 @@ const Finish = () => {
     // }
 
     const  handlerChangeSelected = (key, id) => {
-
-            
-            // setSelectedPokemon({...player2[key]});
-
-            Object.values(player2).map(item => {
+        setPlayer2(prevState => {
+            return prevState.reduce((acc, item) => {
+                item.selected = false;
                 if (item.id === id) {
                     setSelectedPokemon(item);
+                    item.selected =true;
                 }
-            })
-            console.log('Sel',{selectedPokemon});
-            console.log('player21',player2)
+                acc.push(item);
+                return acc;
+            }, [])
+        })
     }
    
     const hendlerAndGameClick = () => {
