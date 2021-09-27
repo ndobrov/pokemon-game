@@ -63,7 +63,6 @@ const BoardPage = () => {
     }
 
     const handlerClickBoardPlate = async (position) => {
-
         if(choiceCard) {
             const params = {
                 position,
@@ -84,11 +83,9 @@ const BoardPage = () => {
                 if (choiceCard.player === 1) {
                     setPlaer1(prevState => prevState.filter(item => item.id !== choiceCard.id));
                 }
-
                 if (choiceCard.player === 2) {
                     setPlaer2(prevState => prevState.filter(item => item.id !== choiceCard.id));
                 }
-
                 setBoard(request.data);
 
                 setSteps(prevState => {
@@ -96,8 +93,6 @@ const BoardPage = () => {
 
                     return count;
                 })
-                // console.log(steps)
-                
         }
     } 
 

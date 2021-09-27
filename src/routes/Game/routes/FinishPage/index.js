@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 
 import PokemonCard from '../../../../components/PokemonCard';
@@ -29,9 +29,9 @@ const Finish = () => {
 
     const history = useHistory();
 
-    // if ( Object.keys(pokemons).length === 0 || Object.keys(player2).length === 0) {
-    //     history.replace('/game');
-    // }
+    if ( Object.keys(pokemons).length === 0 || Object.keys(player2).length === 0) {
+        history.replace('/game');
+    }
 
     const  handlerChangeSelected = (key, id) => {
         setPlayer2(prevState => {
@@ -49,6 +49,8 @@ const Finish = () => {
    
     const hendlerAndGameClick = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
+
+        setSelectedPokemon(prevState => prevState.selected = false);
         firebase.addPokemon(selectedPokemon)
         history.push('/game/');
         setSelectedPokemon((prevState) => prevState = {});
@@ -56,57 +58,52 @@ const Finish = () => {
 
     return (
         <>
-                <div className={s.flex}>{}
-                    {
-                        Object.entries(pokemons).map(([key, {name, img, id, values, type, selected}]) =>
-                        <PokemonCard 
-                            key={key}
-                            objID={key}
-                            name={name}
-                            img={img}
-                            id={id}
-                            values={values}
-                            type={type}
-                            active={true}
-                            isSelected={selected}
-                            className={s.card}
-                            />
-                        )
-                        }
-                    </div>
-
+            <div className={s.flex}>{}
+                {
+                    Object.entries(pokemons).map(([key, {name, img, id, values, type, selected}]) =>
+                    <PokemonCard 
+                        key={key}
+                        objID={key}
+                        name={name}
+                        img={img}
+                        id={id}
+                        values={values}
+                        type={type}
+                        active={true}
+                        isSelected={selected}
+                        className={s.card}
+                        />
+                    )
+                    }
+                </div>
             <button  className={s.buttonWrap}
                         onClick={hendlerAndGameClick}
                         disabled={Object.keys(pokemons).length > 5}
                         >
                         AND GAME
             </button>
-
             <div className={s.flex}>{}
-                        {
-                            Object.entries(player2).map(([key, {name, img, id, values, type, selected}]) =>
-                            <PokemonCard 
-                                key={key}
-                                objID={key}
-                                name={name}
-                                img={img}
-                                id={id}
-                                values={values}
-                                type={type}
-                                active={true}
-                                isSelected={selected}
-                                className={s.card}
-                                onChangePokemon={()=> {
-                                    // if (selectedPokemon.length < 2 ) {
-                                         handlerChangeSelected(key, id)
-
-                                    } 
-                                }
-                                />
-                            )
+                {
+                    Object.entries(player2).map(([key, {name, img, id, values, type, selected}]) =>
+                    <PokemonCard 
+                        key={key}
+                        objID={key}
+                        name={name}
+                        img={img}
+                        id={id}
+                        values={values}
+                        type={type}
+                        active={true}
+                        isSelected={selected}
+                        className={s.card}
+                        onChangePokemon={()=> {
+                                    handlerChangeSelected(key, id)
+                            } 
                         }
-                    </div>
-            {/* </div> */}
+                        />
+                    )
+                }
+            </div>
         </>
     );
   }
