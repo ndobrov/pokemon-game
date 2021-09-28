@@ -3,14 +3,9 @@
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 40px;
-    /* justify-content: center;
-    align-items: center;
-     flex-wrap: wrap; */
-    padding-top: 70px; 
+    padding-top: 85px; 
 }
 .buttonWrap {
-    /* text-align: center;
-    padding: 2rem; */
     position: absolute;
     right: 0;
     left: 0;

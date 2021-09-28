@@ -1,7 +1,7 @@
 import style from './style.module.css'
 import cn from 'classnames';
 
-function Layout({id, title='Title defaults', urlBg, colorBg, children}) {
+function Layout({id, title="let's play", urlBg, colorBg, children}) {
 
     // const stylesImg = urlBg? {background:`url(${urlBg})`} : {background:`${colorBg}`}
        const stylesImg = {}

@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router';
+
 import Header from '../../components/Header/index';
 import Layout from '../../components/Layout/index';
 // import PokemonCard from '../../components/PokemonCard/index';
@@ -8,8 +10,11 @@ import url2 from '../../assets/bj3.jpg'
 import s from './style.module.css'
 
 function HomePage({ onChangePage }) {
-    const handlerClickButton = (page) => {
-        onChangePage && onChangePage(page);
+
+  const history = useHistory();
+
+    const handlerClickButton = () => {
+      history.push('/game');
     }
 
   return (
