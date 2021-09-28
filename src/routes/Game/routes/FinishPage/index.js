@@ -49,11 +49,18 @@ const Finish = () => {
    
     const hendlerAndGameClick = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
+            console.log(Object.keys(selectedPokemon));
+        if (Object.keys(selectedPokemon).length > 0) { 
+        
+            setSelectedPokemon(prevState => prevState.selected = false);
+            firebase.addPokemon(selectedPokemon);
+            history.push('/game/');
+            setSelectedPokemon((prevState) => prevState = {});
+        } else
+         alert ("add pokemon")
+         setSelectedPokemon(prevState => prevState.selected = false);
 
-        setSelectedPokemon(prevState => prevState.selected = false);
-        firebase.addPokemon(selectedPokemon)
-        history.push('/game/');
-        setSelectedPokemon((prevState) => prevState = {});
+
     }
 
     return (

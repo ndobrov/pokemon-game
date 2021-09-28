@@ -12,6 +12,11 @@ const GamePage = () => {
 
     const [selectedPokemons, setSelectedPokemons] = useState({});
     const [selectedPokemons2, setSelectedPokemons2] = useState({});
+    const [resultGame, setResultGame] = useState({
+        win: false,
+        lose: false,
+        draw: false
+    });
 
     const match = useRouteMatch();
 
@@ -37,7 +42,7 @@ const GamePage = () => {
 }
     return (
         <PokemonContext.Provider value={{
-            win: "",
+            win: resultGame, 
             pokemons: selectedPokemons,
             pokemonsPlayer2: selectedPokemons2,
             onPokemonsTwoPlayer: hendlerPokemons,
