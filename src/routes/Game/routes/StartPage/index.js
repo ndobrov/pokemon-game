@@ -8,26 +8,34 @@ import { FireBaseContext} from '../../../../context/firebaseContext'
 import { PokemonContext} from '../../../../context/pokemonContext'
 
 import s from './style.module.css'
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getPokemonsAsync,
+         selectPokemonsData, 
+         selectPokemonsLoading, 
+         selectSelectedPokemons, 
+         selectPokemon } from '../../../../store/pokemons';
 
 const StartPage = () => {
-    const firebase = useContext(FireBaseContext);
-    const pokemonsContext = useContext(PokemonContext);
-    const history = useHistory();
+
+    const isLoading = useSelector(selectPokemonsLoading);
+    const pokemonsRedux = useSelector(selectPokemonsData);
+    const selectedPokemons = useSelector(selectSelectedPokemons);
+    const dispatch = useDispatch();
 
     const [pokemons, setPokemons] = useState({});
+    const history = useHistory();
 
     useEffect(() => {
-        firebase.getPokemonSoket((pokemons) => {
-            setPokemons(pokemons);
-        });
-
-        return () => firebase.offPokemonSoket();
+        dispatch(getPokemonsAsync());
     }, []);
+
+    useEffect(() => {
+      setPokemons(pokemonsRedux);  
+    }, [pokemonsRedux]);
 
     const handlerChangeSelected = (key) => {
         const pokemon = {...pokemons[key]}
-        pokemonsContext.onSelectedPokemons(key, pokemon);
+        dispatch(selectPokemon( pokemon)) ;
 
         setPokemons(prevState => ({
                 ...prevState,
@@ -47,7 +55,7 @@ const StartPage = () => {
             <Layout colorBg="orange">
                 <button  className={s.buttonWrap}
                     onClick={hendlerStartGameClick}
-                    disabled={Object.keys(pokemonsContext.pokemons).length < 5}
+                    disabled={Object.keys(selectedPokemons).length < 5}
                     >
                     START GAME
                 </button>
@@ -66,9 +74,9 @@ const StartPage = () => {
                             isSelected={selected}
                             className={s.card}
                             onChangePokemon={()=> {
-                                if (Object.keys(pokemonsContext.pokemons).length < 5 || selected) {
-                                    handlerChangeSelected(key)}
-                            } }  
+                                if (Object.keys(selectedPokemons).length < 5 || selected) {
+                                        handlerChangeSelected(key)}
+                            } }
                             />
                         )
                     }

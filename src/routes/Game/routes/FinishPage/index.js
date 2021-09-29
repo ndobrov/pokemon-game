@@ -1,44 +1,65 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 
 import PokemonCard from '../../../../components/PokemonCard';
 
-import { PokemonContext} from '../../../../context/pokemonContext'
-import { FireBaseContext} from '../../../../context/firebaseContext'
+// import { PokemonContext} from '../../../../context/pokemonContext'
+// import { FireBaseContext} from '../../../../context/firebaseContext'
+
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSelectedPokemons, clearState, winner} from '../../../../store/pokemons';
+import { selectPokemonTwo, pokemonsPlTwoData, addPokemonToFirebase} from '../../../../store/pokemonsPlayerTwo';
 
 import s from './style.module.css';
 
 
 const Finish = () => {
 
-    const {pokemons, pokemonsPlayer2} = useContext(PokemonContext);
-    const firebase = useContext(FireBaseContext);
+    const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
+    const selectPokemonPlayerTwo = useSelector(pokemonsPlTwoData);
+    const pokemonsPlayer21 = useSelector(pokemonsPlTwoData);
+    const winnerRedux = useSelector(winner);
 
-    const [ player1, setPlayer1 ] = useState(() => {
-        return Object.values(pokemons).map(item => ({
-            ...item,
-        }))
-    });
-    const [ player2, setPlayer2 ]  = useState(() => {
-        return Object.values(pokemonsPlayer2).map(item => ({
-            ...item,
-        }))
-    });
+    const dispatch = useDispatch();
+
+    // const {pokemons, pokemonsPlayer2} = useContext(PokemonContext);
+    // const firebase = useContext(FireBaseContext);
+    const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
+    const [ player2, setPlayer2 ] = useState(pokemonsPlayer21);
+
+
+//     useEffect(() => {
+//         setPlayer1() => {
+//         return Object.values(pokemonsPlayer1).map(item => ({
+//             ...item,
+//         }))
+//     });
+// }, [pokemonsPlayer1]);
+
+//     useEffect(() => {
+//     const [ player2, setPlayer2 ]  = useState(() => {
+//         return Object.values(pokemonsPlayer2).map(item => ({
+//             ...item,
+//         }))
+//     });
+// }, [pokemonsRedux]);
+
 
     const [selectedPokemon, setSelectedPokemon] = useState([]);
 
     const history = useHistory();
 
-    if ( Object.keys(pokemons).length === 0 || Object.keys(player2).length === 0) {
+    if ( Object.keys(pokemonsPlayer1.data).length === 0 || Object.keys(player2).length === 0) {
         history.replace('/game');
     }
 
     const  handlerChangeSelected = (key, id) => {
+
         setPlayer2(prevState => {
             return prevState.reduce((acc, item) => {
                 item.selected = false;
                 if (item.id === id) {
-                    setSelectedPokemon(item);
+                    dispatch(selectPokemonTwo());
                     item.selected =true;
                 }
                 acc.push(item);
@@ -49,25 +70,18 @@ const Finish = () => {
    
     const hendlerAndGameClick = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
-            console.log(Object.keys(selectedPokemon));
-        if (Object.keys(selectedPokemon).length > 0) { 
-        
-            setSelectedPokemon(prevState => prevState.selected = false);
-            firebase.addPokemon(selectedPokemon);
+            // console.log(Object.keys(selectedPokemon));
+            dispatch(addPokemonToFirebase(selectedPokemon))
+            dispatch(clearState());
             history.push('/game/');
             setSelectedPokemon((prevState) => prevState = {});
-        } else
-         alert ("add pokemon")
-         setSelectedPokemon(prevState => prevState.selected = false);
-
-
     }
 
     return (
         <>
             <div className={s.flex}>{}
                 {
-                    Object.entries(pokemons).map(([key, {name, img, id, values, type, selected}]) =>
+                    Object.entries(player1).map(([key, {name, img, id, values, type, selected}]) =>
                     <PokemonCard 
                         key={key}
                         objID={key}
@@ -85,7 +99,7 @@ const Finish = () => {
                 </div>
             <button  className={s.buttonWrap}
                         onClick={hendlerAndGameClick}
-                        disabled={Object.keys(pokemons).length > 5}
+                        disabled={Object.keys(pokemonsPlayer1).length > 5}
                         >
                         AND GAME
             </button>
