@@ -6,7 +6,7 @@ export const slice = createSlice({
     name: 'pokemonsPlayerTwo',
     initialState: {
         isLoading: false,
-        data: {},
+        data: [],
         error: null,
     },
     reducers: {
@@ -36,7 +36,7 @@ export const slice = createSlice({
     }
 });
 
-export const {fetchPokemons, fetchPokemonsResolve, fetchPokemonsReject} = slice.actions;
+export const {fetchPokemons, fetchPokemonsResolve, selectPokemonTwo} = slice.actions;
 
 export const selectPokemonsLoading = state => state.pokemonsPlayerTwo.isLoading;
 // export const selectPokemonsData =  state => state.pokemonsPlayerTwo.data;
@@ -48,8 +48,8 @@ export const getPokemonsPlayerTwoAsync = () => async (dispatch) => {
     dispatch(fetchPokemons());
     const data = await fetch('https://reactmarathon-api.netlify.app/api/create-player');
     const player2Request = await data.json();
-    dispatch(fetchPokemonsResolve(player2Request));
-    console.log('1',player2Request)
+    dispatch(fetchPokemonsResolve(player2Request.data));
+    console.log('1',player2Request.data)
 }
 
 export const addPokemonToFirebase = (selectedPokemon, cb) => {

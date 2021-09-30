@@ -17,7 +17,7 @@ const Finish = () => {
 
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
     const selectPokemonPlayerTwo = useSelector(pokemonsPlTwoData);
-    const pokemonsPlayer21 = useSelector(pokemonsPlTwoData);
+    const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
     const winnerRedux = useSelector(winner);
 
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Finish = () => {
     // const {pokemons, pokemonsPlayer2} = useContext(PokemonContext);
     // const firebase = useContext(FireBaseContext);
     const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
-    const [ player2, setPlayer2 ] = useState(pokemonsPlayer21);
+    // const [ player2, setPlayer2 ] = useState(pokemonsPlayer21);
 
 
 //     useEffect(() => {
@@ -36,12 +36,12 @@ const Finish = () => {
 //     });
 // }, [pokemonsPlayer1]);
 
-//     useEffect(() => {
-//     const [ player2, setPlayer2 ]  = useState(() => {
-//         return Object.values(pokemonsPlayer2).map(item => ({
-//             ...item,
-//         }))
-//     });
+    // useEffect(() => {
+    const [ player2, setPlayer2 ]  = useState(() => {
+        return Object.values(pokemonsPlayer2).map(item => ({
+            ...item,
+        }))
+    });
 // }, [pokemonsRedux]);
 
 
@@ -49,9 +49,9 @@ const Finish = () => {
 
     const history = useHistory();
 
-    if ( Object.keys(pokemonsPlayer1.data).length === 0 || Object.keys(player2).length === 0) {
-        history.replace('/game');
-    }
+    // if ( Object.keys(pokemonsPlayer1.data).length === 0 || Object.keys(player2).length === 0) {
+    //     history.replace('/game');
+    // }
 
     const  handlerChangeSelected = (key, id) => {
 
@@ -72,7 +72,7 @@ const Finish = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
             // console.log(Object.keys(selectedPokemon));
             dispatch(addPokemonToFirebase(selectedPokemon))
-            dispatch(clearState());
+            // dispatch(clearState());
             history.push('/game/');
             setSelectedPokemon((prevState) => prevState = {});
     }

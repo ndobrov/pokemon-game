@@ -31,8 +31,6 @@ const BoardPage = () => {
     const selectedPokemons = useSelector(selectSelectedPokemons);
     // const selectPokemonPlayerTwo = useSelector(selectPokemonsPlayerTwo);
     const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
-
-    
     const dispatch = useDispatch();
 
     const [ board, setBoard ] = useState([]);
@@ -42,15 +40,10 @@ const BoardPage = () => {
             possession: 'blue',
         }))
     });
-    const [ player2, setPlaer2 ] = useState(pokemonsPlayer2);
+    const [ player2, setPlaer2 ] = useState([]);
     const [ choiceCard, setChoiceCard ] = useState(null);
     const [ steps, setSteps ] = useState(0);
-
     const history = useHistory();
-
-    useEffect(() => {
-        dispatch(getPokemonsPlayerTwoAsync());
-    }, []);
 
     useEffect(() => {
 
@@ -59,15 +52,17 @@ const BoardPage = () => {
             const boardRequest = await boardResponse.json();
             setBoard(boardRequest.data);
         }
+        dispatch(getPokemonsPlayerTwoAsync());
+        
+        setPlaer2(() => {
+            return pokemonsPlayer2.map(item => ({
+                ...item,
+                possession: 'red',
+            }))
+        })
         fetchData();
     }, []);
-    
-    setPlaer2(() => {
-        return Object.value(pokemonsPlayer2).map(item => ({
-            ...item,
-            possession: 'red',
-        }))
-    })
+
 
      console.log('2',pokemonsPlayer2)
 
