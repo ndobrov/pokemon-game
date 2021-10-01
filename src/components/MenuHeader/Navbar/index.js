@@ -14,18 +14,18 @@ function NavBar({isActive, bgActive=false, changeActive, onClickLogin}) {
                     LOGO
                 </p>
 
-                {/* <div 
+                <div 
                     className={s.loginAndMenu}
                     onClick={onClickLogin}>
                     <div className={s.loginWrap}>
                         <LoginSVG/>
-                    </div> */}
+                    </div>
                     <div className={cn(s.menuButton, {
                         [s.active]: isActive 
                         })}
                         onClick={changeActive}>
                     <span />
-                {/* </div> */}
+                </div>
 
                 </div>
                 
