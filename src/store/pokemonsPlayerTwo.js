@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import FirebaseClass from "../service/firebase";
-
 
 export const slice = createSlice({
     name: 'pokemonsPlayerTwo',
@@ -28,18 +26,12 @@ export const slice = createSlice({
             error: action.payload,
         }),
 
-        selectPokemonTwo: (state, action) => ({
-            ...state,
-            pokemonsPlayerTwo: {...action.payload}
-
-        }),
     }
 });
 
 export const {fetchPokemons, fetchPokemonsResolve, selectPokemonTwo} = slice.actions;
 
 export const selectPokemonsLoading = state => state.pokemonsPlayerTwo.isLoading;
-// export const selectPokemonsData =  state => state.pokemonsPlayerTwo.data;
 
 export const selectPokemonsPlayerTwo = state => state.pokemonsPlayerTwo.pokemonsPlayerTwo;
 export const pokemonsPlTwoData = state => state.pokemonsPlayerTwo.data;
@@ -50,10 +42,6 @@ export const getPokemonsPlayerTwoAsync = () => async (dispatch) => {
     const player2Request = await data.json();
     dispatch(fetchPokemonsResolve(player2Request.data));
     console.log('1',player2Request.data)
-}
-
-export const addPokemonToFirebase = (selectedPokemon, cb) => {
-    FirebaseClass.addPokemon(selectedPokemon, cb);
 }
 
 export default slice.reducer;

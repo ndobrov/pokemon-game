@@ -3,12 +3,11 @@ import { useHistory } from 'react-router';
 
 import PokemonCard from '../../../../components/PokemonCard';
 
-// import { PokemonContext} from '../../../../context/pokemonContext'
-// import { FireBaseContext} from '../../../../context/firebaseContext'
-
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedPokemons, clearState, winner} from '../../../../store/pokemons';
-import { selectPokemonTwo, pokemonsPlTwoData, addPokemonToFirebase} from '../../../../store/pokemonsPlayerTwo';
+import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
+import { pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
+ 
+import FirebaseClass from "../../../../service/firebase";
 
 import s from './style.module.css';
 
@@ -16,16 +15,11 @@ import s from './style.module.css';
 const Finish = () => {
 
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
-    const selectPokemonPlayerTwo = useSelector(pokemonsPlTwoData);
     const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
-    const winnerRedux = useSelector(winner);
 
     const dispatch = useDispatch();
-
-    // const {pokemons, pokemonsPlayer2} = useContext(PokemonContext);
-    // const firebase = useContext(FireBaseContext);
     const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
-    // const [ player2, setPlayer2 ] = useState(pokemonsPlayer21);
+    const [ player2, setPlayer2 ] = useState(pokemonsPlayer2);
 
 
 //     useEffect(() => {
@@ -36,16 +30,16 @@ const Finish = () => {
 //     });
 // }, [pokemonsPlayer1]);
 
-    // useEffect(() => {
-    const [ player2, setPlayer2 ]  = useState(() => {
+    useEffect(() => {
+    setPlayer2(() => {
         return Object.values(pokemonsPlayer2).map(item => ({
             ...item,
         }))
     });
-// }, [pokemonsRedux]);
+}, [pokemonsPlayer2]);
 
 
-    const [selectedPokemon, setSelectedPokemon] = useState([]);
+    const [selectedPokemon, setSelectedPokemon] = useState();
 
     const history = useHistory();
 
@@ -59,7 +53,7 @@ const Finish = () => {
             return prevState.reduce((acc, item) => {
                 item.selected = false;
                 if (item.id === id) {
-                    dispatch(selectPokemonTwo());
+                    setSelectedPokemon(item);
                     item.selected =true;
                 }
                 acc.push(item);
@@ -70,11 +64,9 @@ const Finish = () => {
    
     const hendlerAndGameClick = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
-            // console.log(Object.keys(selectedPokemon));
-            dispatch(addPokemonToFirebase(selectedPokemon))
-            // dispatch(clearState());
+            FirebaseClass.addPokemon(selectedPokemon);
+            dispatch(clearState());
             history.push('/game/');
-            setSelectedPokemon((prevState) => prevState = {});
     }
 
     return (

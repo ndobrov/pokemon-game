@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import PokemonCard from '../../../../components/PokemonCard';
@@ -6,7 +6,7 @@ import PlayerBoard from './component/PlayerBoard'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getPokemonsPlayerTwoAsync, pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
-import { selectSelectedPokemons} from '../../../../store/pokemons';
+import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
          
 import s from './style.module.css';
 
@@ -43,6 +43,7 @@ const BoardPage = () => {
     const [ player2, setPlaer2 ] = useState([]);
     const [ choiceCard, setChoiceCard ] = useState(null);
     const [ steps, setSteps ] = useState(0);
+
     const history = useHistory();
 
     useEffect(() => {
@@ -106,18 +107,25 @@ const BoardPage = () => {
     } 
 
     useEffect(() => {
+        // let wimmer = false;
             if (steps === 9) {
                 const [count1, count2] = counterWin(board, player1, player2);
+
                 if (count1 > count2) {
+                    // wimmer = true;
                     alert('WIM');
                 } else if (count1 < count2) {
                     alert('LOSE');
                 } else {
                     alert('DRAW');
                 }
-            history.push('/game/finish');
-
+            
+         history.push('/game/finish')
             }
+        // wimmer? history.push('/game/finish'):
+        //      history.push('/game')
+        //      dispatch(clearState())
+        //     }
     }, [steps])
 
     // const hendlerStartGameClick =  () => {
