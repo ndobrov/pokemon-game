@@ -11,13 +11,16 @@ import NavBar from "../Navbar";
 const MenuHeader = ({bgActive})  => {
     const [isActive, setIsActive] = useState(null);
     const [isOpenModal, setisOpenModal] = useState(false);
-    const [LoginIn, setLoginin] = useState(true);
+    const [register, setRegister] = useState(true);
 
-    const hendlerChangeLogin = () => {
-        setLoginin(prevState => !prevState)
+    const hendlerChangeRegister = () => {
+        setRegister(prevState => !prevState)
     }
     
-    let title = LoginIn ? "Login in..." : "Login up..."
+    let title = register ? "Login in..." : "Register"
+    let titleRegister = register ? "Register" : "Login in"
+
+    console.log(register)
 
     const handlerClick = () => {
         setIsActive(prevState => !prevState);
@@ -36,7 +39,7 @@ const MenuHeader = ({bgActive})  => {
                 returnSecureToken: true,
             })
         }
-        if (LoginIn) {
+        if (register === false) {
             const responce = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
                 if (responce.hasOwnProperty('error')) {
                     NotificationManager.error(responce.error.message, 'Wrong!');
@@ -69,10 +72,12 @@ const MenuHeader = ({bgActive})  => {
                 isOpen={isOpenModal}
                 title={title}
                 onCloseModal={hendlerClickLogin}
-                onChangeModal={hendlerChangeLogin}
+                // onChangeModal={hendlerChangeLogin}
                 >
                 <LoginForm 
+                    title={titleRegister}
                     onSubmit={handlerSubmitLoginForm}
+                    onChangeRegister={hendlerChangeRegister}
                     />
             </Modal>
         </>

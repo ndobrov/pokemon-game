@@ -3,7 +3,7 @@ import cn from "classnames";
 
 import s from './style.module.css'
 
-const Modal = ({isOpen, title, children, onCloseModal, onChangeModal}) => {
+const Modal = ({isOpen, title, children, onCloseModal}) => {
     const modalEl = useRef();
 
     useEffect(() => {
@@ -32,7 +32,6 @@ const Modal = ({isOpen, title, children, onCloseModal, onChangeModal}) => {
                 className={s.modal}
             >
                 <div 
-                    onClick={onChangeModal}
                     className={s.head}>
                     {title}
                     <span  

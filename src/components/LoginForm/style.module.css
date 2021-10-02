@@ -1,0 +1,10 @@
+.labelRegister {
+    color: #f300b4;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    right: 50px;
+    top: 260px;
+    transition: 0.2s ease all;cursor: pointer;
+
+}

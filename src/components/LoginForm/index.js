@@ -1,11 +1,12 @@
 import { useState } from "react";
 import InputLogin from "./components/InputLogin/index";
+import s from './style.module.css'
+ 
 
-const LoginForm = ({onSubmit}) => {
+const LoginForm = ({onSubmit, title, onChangeRegister}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // const onChangeLogin=((e) => setEmail(e.target.value))
 
     const handlerSubmit = (e) => {
         e.preventDefault();
@@ -16,7 +17,6 @@ const LoginForm = ({onSubmit}) => {
         setEmail('');
         setPassword('');
     }
-    console.log(email, password)
     return (
         <form onSubmit={handlerSubmit}>
             <InputLogin
@@ -36,8 +36,14 @@ const LoginForm = ({onSubmit}) => {
                 onChange={(e) => setPassword(e.target.value)} 
             />
             <button >
-            Login
+                SIGNIN
             </button>
+            <div 
+                onClick={onChangeRegister}
+                className={s.labelRegister}
+                >
+                {title} ?
+                </div>
         </form>
 
     )
