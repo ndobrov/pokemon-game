@@ -8,19 +8,29 @@ import Menu from "../Menu";
 import NavBar from "../Navbar";
 
 
+const loginSignupUser = async ({email, password, type}) => {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({
+            email,
+            password,
+            returnSecureToken: true,
+        })
+    };
+    switch (type) {
+        case 'signup' : 
+            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
+        case 'login' :   
+            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
+        default:
+            return 'I cannot login user';
+    }
+}
+
+
 const MenuHeader = ({bgActive})  => {
     const [isActive, setIsActive] = useState(null);
     const [isOpenModal, setisOpenModal] = useState(false);
-    const [register, setRegister] = useState(true);
-
-    const hendlerChangeRegister = () => {
-        setRegister(prevState => !prevState)
-    }
-    
-    let title = register ? "Login in..." : "Register"
-    let titleRegister = register ? "Register" : "Login in"
-
-    console.log(register)
 
     const handlerClick = () => {
         setIsActive(prevState => !prevState);
@@ -30,32 +40,18 @@ const MenuHeader = ({bgActive})  => {
         setisOpenModal(prevState => !prevState)
     }
 
-    const handlerSubmitLoginForm = async ({email, password}) => {
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify({
-                email,
-                password,
-                returnSecureToken: true,
-            })
-        }
-        if (register === false) {
-            const responce = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
-                if (responce.hasOwnProperty('error')) {
-                    NotificationManager.error(responce.error.message, 'Wrong!');
-                }else {
-                    localStorage.setItem('idToken', responce.idToken);
-                    NotificationManager.success('Success message')
-                }
-            } else {
-                const responce = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
+    const handlerSubmitLoginForm = async (props) => {
+        const responce = await loginSignupUser(props)
+            
             if (responce.hasOwnProperty('error')) {
                 NotificationManager.error(responce.error.message, 'Wrong!');
-            }else {
+            } else {
+                localStorage.setItem('idToken', responce.idToken);
                 NotificationManager.success('Success message')
-
-            }}
-        }
+                hendlerClickLogin();
+            }
+    }
+        
     return (
         <>
             <Menu
@@ -70,14 +66,12 @@ const MenuHeader = ({bgActive})  => {
             />
             <Modal 
                 isOpen={isOpenModal}
-                title={title}
+                title={'Log in...'}
                 onCloseModal={hendlerClickLogin}
-                // onChangeModal={hendlerChangeLogin}
                 >
                 <LoginForm 
-                    title={titleRegister}
+                    isResetField={!isOpenModal}
                     onSubmit={handlerSubmitLoginForm}
-                    onChangeRegister={hendlerChangeRegister}
                     />
             </Modal>
         </>

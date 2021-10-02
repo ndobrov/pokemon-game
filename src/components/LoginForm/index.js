@@ -1,21 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputLogin from "./components/InputLogin/index";
 import s from './style.module.css'
  
 
-const LoginForm = ({onSubmit, title, onChangeRegister}) => {
+const LoginForm = ({onSubmit, isResetField = false}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLogin, setLogin] = useState(true);
 
+
+    useEffect(() => {
+      setEmail('');
+      setPassword('') ; 
+    }, [isResetField])
 
     const handlerSubmit = (e) => {
         e.preventDefault();
         onSubmit && onSubmit({
+            type: isLogin ? 'Login' : 'signup',
             email,
             password
         });
-        setEmail('');
-        setPassword('');
     }
     return (
         <form onSubmit={handlerSubmit}>
@@ -35,15 +40,17 @@ const LoginForm = ({onSubmit, title, onChangeRegister}) => {
                 name="password" 
                 onChange={(e) => setPassword(e.target.value)} 
             />
+            <div className={s.flex}>
             <button >
-                SIGNIN
+                {isLogin ? 'Login' : 'Signup'} 
             </button>
             <div 
-                onClick={onChangeRegister}
-                className={s.labelRegister}
+                onClick={() => setLogin(!isLogin)}
+                className={s.link}
                 >
-                {title} ?
+                {isLogin ? 'Register' : 'Login'}
                 </div>
+            </div>
         </form>
 
     )
