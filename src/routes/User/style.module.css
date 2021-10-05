@@ -1,0 +1,16 @@
+.userTitle {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 100px;
+    font-size: 16px;
+}
+
+.userLink {
+    margin-bottom: 20px;
+}
+
+.userBtn {
+    margin-top: 30vh;
+}

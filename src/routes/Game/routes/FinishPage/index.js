@@ -6,9 +6,8 @@ import PokemonCard from '../../../../components/PokemonCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
 import { pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
+import { selectLocalId, addPokemonToFirebase} from '../../../../store/user';
  
-import FirebaseClass from "../../../../service/firebase";
-
 import s from './style.module.css';
 
 
@@ -16,6 +15,8 @@ const Finish = () => {
 
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
     const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
+    const localId = useSelector(selectLocalId);
+
 
     const dispatch = useDispatch();
     const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
@@ -64,7 +65,7 @@ const Finish = () => {
    
     const hendlerAndGameClick = () => {
         alert (`add pokemon "${selectedPokemon.name}"?`)
-            FirebaseClass.addPokemon(selectedPokemon);
+            addPokemonToFirebase(selectedPokemon, localId);
             dispatch(clearState());
             history.push('/game/');
     }

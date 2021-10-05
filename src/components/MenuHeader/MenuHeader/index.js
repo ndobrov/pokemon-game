@@ -1,5 +1,7 @@
 import { useState } from 'react'; 
 import { NotificationManager } from 'react-notifications';
+import { useDispatch } from 'react-redux';
+import { getUserUpdateAsync } from '../../../store/user';
 
 import LoginForm from '../../LoginForm';
 import Modal from '../../Modal';
@@ -17,21 +19,22 @@ const loginSignupUser = async ({email, password, type}) => {
             returnSecureToken: true,
         })
     };
+
     switch (type) {
-        case 'signup' : 
+        case 'signup': 
             return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
-        case 'login' :   
+        case 'login':   
             return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
         default:
             return 'I cannot login user';
+        
     }
 }
-
 
 const MenuHeader = ({bgActive})  => {
     const [isActive, setIsActive] = useState(null);
     const [isOpenModal, setisOpenModal] = useState(false);
-
+    const dispatche = useDispatch();
     const handlerClick = () => {
         setIsActive(prevState => !prevState);
     }
@@ -41,17 +44,28 @@ const MenuHeader = ({bgActive})  => {
     }
 
     const handlerSubmitLoginForm = async (props) => {
-        const responce = await loginSignupUser(props)
+        const response = await loginSignupUser(props);
             
-            if (responce.hasOwnProperty('error')) {
-                NotificationManager.error(responce.error.message, 'Wrong!');
+            if (response.hasOwnProperty('error')) {
+                NotificationManager.error(response.error.message, 'Wrong!');
             } else {
-                localStorage.setItem('idToken', responce.idToken);
-                NotificationManager.success('Success message')
+                if (props.type === 'signup') {
+                    const pokemonsStart = await fetch('https://reactmarathon-api.herokuapp.com/api/pokemons/starter').then(res => res.json());
+
+                    for (const item of pokemonsStart.data) {
+                        await fetch(`https://pokemon-game-6972e-default-rtdb.firebaseio.com/${response.localId}/pokemons.json?auth=${response.idToken}`, {
+                            method: 'POST',
+                            body: JSON.stringify(item)
+                        });
+                    }
+                }
+                localStorage.setItem('idToken', response.idToken);
+                NotificationManager.success('Success message');
+                dispatche(getUserUpdateAsync());   
                 hendlerClickLogin();
             }
     }
-        
+
     return (
         <>
             <Menu

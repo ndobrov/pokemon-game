@@ -17,7 +17,7 @@ const LoginForm = ({onSubmit, isResetField = false}) => {
     const handlerSubmit = (e) => {
         e.preventDefault();
         onSubmit && onSubmit({
-            type: isLogin ? 'Login' : 'signup',
+            type: isLogin ? 'login' : 'signup',
             email,
             password
         });
