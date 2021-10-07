@@ -1,22 +1,70 @@
-import { useState } from 'react';
+import { useState } from 'react'; 
+import { NotificationManager } from 'react-notifications';
+import { useDispatch } from 'react-redux';
+import { getUserUpdateAsync } from '../../../store/user';
+
+import LoginForm from '../../LoginForm';
+import Modal from '../../Modal';
 
 import Menu from "../Menu";
 import NavBar from "../Navbar";
 
-// import s from './style.module.css'
-// import cn from 'classnames';
 
-const MenuHeader = ({bgActive})  => {
-    const[isActive, setIsActive] = useState(null);
-    const[isOpenModal, setisOpenModal] = useState(null);
+const loginSignupUser = async ({email, password, type}) => {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({
+            email,
+            password,
+            returnSecureToken: true,
+        })
+    };
 
-    const handlerClick = () => {
-        setIsActive(prevState => !prevState);
+    switch (type) {
+        case 'signup': 
+            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
+        case 'login':   
+            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
+        default:
+            return 'I cannot login user';
+        
+    }
 }
 
-    // const hendlerClickLogin = () => {
-    //     setisOpenModal(prevState => !prevState)
-    // }
+const MenuHeader = ({bgActive})  => {
+    const [isActive, setIsActive] = useState(null);
+    const [isOpenModal, setisOpenModal] = useState(false);
+    const dispatche = useDispatch();
+    const handlerClick = () => {
+        setIsActive(prevState => !prevState);
+    }
+
+    const hendlerClickLogin = () => {
+        setisOpenModal(prevState => !prevState)
+    }
+
+    const handlerSubmitLoginForm = async (props) => {
+        const response = await loginSignupUser(props);
+            
+            if (response.hasOwnProperty('error')) {
+                NotificationManager.error(response.error.message, 'Wrong!');
+            } else {
+                if (props.type === 'signup') {
+                    const pokemonsStart = await fetch('https://reactmarathon-api.herokuapp.com/api/pokemons/starter').then(res => res.json());
+
+                    for (const item of pokemonsStart.data) {
+                        await fetch(`https://pokemon-game-6972e-default-rtdb.firebaseio.com/${response.localId}/pokemons.json?auth=${response.idToken}`, {
+                            method: 'POST',
+                            body: JSON.stringify(item)
+                        });
+                    }
+                }
+                localStorage.setItem('idToken', response.idToken);
+                NotificationManager.success('Success message');
+                dispatche(getUserUpdateAsync());   
+                hendlerClickLogin();
+            }
+    }
 
     return (
         <>
@@ -28,8 +76,18 @@ const MenuHeader = ({bgActive})  => {
                 isActive={isActive}
                 bgActive={bgActive}
                 changeActive={handlerClick}
-                // onClickLogin={hendlerClickLogin}
+                onClickLogin={hendlerClickLogin}
             />
+            <Modal 
+                isOpen={isOpenModal}
+                title={'Log in...'}
+                onCloseModal={hendlerClickLogin}
+                >
+                <LoginForm 
+                    isResetField={!isOpenModal}
+                    onSubmit={handlerSubmitLoginForm}
+                    />
+            </Modal>
         </>
     )
 }

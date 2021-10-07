@@ -6,7 +6,7 @@ import PlayerBoard from './component/PlayerBoard'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getPokemonsPlayerTwoAsync, pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
-import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
+import { selectSelectedPokemons, hendlerWinner, winnerPlayer} from '../../../../store/pokemons';
          
 import s from './style.module.css';
 
@@ -27,10 +27,10 @@ const counterWin = (board, player1, player2) => {
 }
 
 const BoardPage = () => {
-    // const { pokemons, pokemonsPlayer2, onPokemonsTwoPlayer }= useContext(PokemonContext);
     const selectedPokemons = useSelector(selectSelectedPokemons);
-    // const selectPokemonPlayerTwo = useSelector(selectPokemonsPlayerTwo);
     const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
+    const win = useSelector(winnerPlayer);
+
     const dispatch = useDispatch();
 
     const [ board, setBoard ] = useState([]);
@@ -40,33 +40,34 @@ const BoardPage = () => {
             possession: 'blue',
         }))
     });
-    const [ player2, setPlaer2 ] = useState([]);
+    const [ player2, setPlaer2 ] =  useState([]);    
+
     const [ choiceCard, setChoiceCard ] = useState(null);
     const [ steps, setSteps ] = useState(0);
 
     const history = useHistory();
 
     useEffect(() => {
-
         async function fetchData() {
             const boardResponse = await fetch('https://reactmarathon-api.netlify.app/api/board');
             const boardRequest = await boardResponse.json();
             setBoard(boardRequest.data);
         }
+        fetchData();
+    }, []);
+
+    useEffect(() => {
         dispatch(getPokemonsPlayerTwoAsync());
-        
+    }, []);
+
+    useEffect(() => {
         setPlaer2(() => {
             return pokemonsPlayer2.map(item => ({
                 ...item,
                 possession: 'red',
             }))
         })
-        fetchData();
-    }, []);
-
-
-     console.log('2',pokemonsPlayer2)
-
+}, [pokemonsPlayer2])
 
     if ( Object.keys(selectedPokemons).length === 0) {
         history.replace('/game');
@@ -107,29 +108,19 @@ const BoardPage = () => {
     } 
 
     useEffect(() => {
-        // let wimmer = false;
             if (steps === 9) {
                 const [count1, count2] = counterWin(board, player1, player2);
-
                 if (count1 > count2) {
-                    // wimmer = true;
+                    dispatch(hendlerWinner(true));
                     alert('WIM');
                 } else if (count1 < count2) {
                     alert('LOSE');
                 } else {
                     alert('DRAW');
                 }
-            
          history.push('/game/finish')
             }
-        // wimmer? history.push('/game/finish'):
-        //      history.push('/game')
-        //      dispatch(clearState())
-        //     }
     }, [steps])
-
-    // const hendlerStartGameClick =  () => {
-    //     history.push('/game/board');
 
     return (
         <div className={s.root}>

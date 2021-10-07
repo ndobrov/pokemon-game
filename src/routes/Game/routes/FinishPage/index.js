@@ -4,11 +4,10 @@ import { useHistory } from 'react-router';
 import PokemonCard from '../../../../components/PokemonCard';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
+import { selectSelectedPokemons, winnerPlayer, clearState} from '../../../../store/pokemons';
 import { pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
+import { selectLocalId, addPokemonToFirebase} from '../../../../store/user';
  
-import FirebaseClass from "../../../../service/firebase";
-
 import s from './style.module.css';
 
 
@@ -16,25 +15,18 @@ const Finish = () => {
 
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
     const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
+    const localId = useSelector(selectLocalId);
+    const winner = useSelector(winnerPlayer);
 
     const dispatch = useDispatch();
     const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
     const [ player2, setPlayer2 ] = useState(pokemonsPlayer2);
 
-
-//     useEffect(() => {
-//         setPlayer1() => {
-//         return Object.values(pokemonsPlayer1).map(item => ({
-//             ...item,
-//         }))
-//     });
-// }, [pokemonsPlayer1]);
-
     useEffect(() => {
-    setPlayer2(() => {
-        return Object.values(pokemonsPlayer2).map(item => ({
-            ...item,
-        }))
+        setPlayer2(() => {
+            return Object.values(pokemonsPlayer2).map(item => ({
+                ...item,
+            }))
     });
 }, [pokemonsPlayer2]);
 
@@ -43,9 +35,9 @@ const Finish = () => {
 
     const history = useHistory();
 
-    // if ( Object.keys(pokemonsPlayer1.data).length === 0 || Object.keys(player2).length === 0) {
-    //     history.replace('/game');
-    // }
+    if ( Object.keys(player1).length === 0 || Object.keys(player2).length === 0) {
+        history.replace('/game');
+    }
 
     const  handlerChangeSelected = (key, id) => {
 
@@ -63,10 +55,13 @@ const Finish = () => {
     }
    
     const hendlerAndGameClick = () => {
-        alert (`add pokemon "${selectedPokemon.name}"?`)
-            FirebaseClass.addPokemon(selectedPokemon);
-            dispatch(clearState());
-            history.push('/game/');
+            // console.log('winner2', winner);
+        if(winner) {
+            alert (`add pokemon "${selectedPokemon.name}"?`)
+            addPokemonToFirebase(selectedPokemon, localId)};
+
+        dispatch(clearState());
+        history.push('/game/');
     }
 
     return (

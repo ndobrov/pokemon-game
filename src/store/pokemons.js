@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import FirebaseClass from "../service/firebase";
+import { selectLocalId } from "./user";
 
 
 export const slice = createSlice({
@@ -11,7 +11,7 @@ export const slice = createSlice({
         selectedPokemons: {},
         pokemonsPlayerTwo: [],
         playerTwo: [],
-        winner: null, 
+        winner: false, 
     },
     reducers: {
         fetchPokemons: state => ({
@@ -32,7 +32,6 @@ export const slice = createSlice({
             error: action.payload,
         }),
 
-
         selectPokemon: (state, action) => {
             const newCards = { ...state.selectedPokemons };
             if (newCards[action.payload.id]) {
@@ -40,7 +39,6 @@ export const slice = createSlice({
                 delete newCards[action.payload.id];
                 return {...state, selectedPokemons: newCards};
             }
-        
             newCards[action.payload.id] = action.payload;
             return { 
                 ...state, 
@@ -59,7 +57,6 @@ export const slice = createSlice({
             ...state,
             winner: action.payload,
         })
-        
     }
 })
 
@@ -76,14 +73,14 @@ export const selectPokemonsLoading = state => state.pokemons.isLoading;
 export const selectPokemonsData =  state => state.pokemons.data;
 export const selectSelectedPokemons = state => state.pokemons.selectedPokemons;
 
-export const winner = state => state.pokemons.winner;
+export const winnerPlayer = state => state.pokemons.winner;
 
-export const getPokemonsAsync = () => async (dispatch) => {
+export const getPokemonsAsync = () => async (dispatch, getState) => {
+    const localId = selectLocalId(getState());
     dispatch(fetchPokemons());
-    const data = await FirebaseClass.getPokemonsOnce();
+    const data = await fetch(`https://pokemon-game-6972e-default-rtdb.firebaseio.com/${localId}/pokemons.json`).then(res => res.json());
     dispatch(fetchPokemonsResolve(data));
 }
-
 
 export default slice.reducer;
 
