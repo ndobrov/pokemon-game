@@ -11,7 +11,7 @@ export const slice = createSlice({
         selectedPokemons: {},
         pokemonsPlayerTwo: [],
         playerTwo: [],
-        winner: null, 
+        winner: false, 
     },
     reducers: {
         fetchPokemons: state => ({
@@ -73,13 +73,12 @@ export const selectPokemonsLoading = state => state.pokemons.isLoading;
 export const selectPokemonsData =  state => state.pokemons.data;
 export const selectSelectedPokemons = state => state.pokemons.selectedPokemons;
 
-export const winner = state => state.pokemons.winner;
+export const winnerPlayer = state => state.pokemons.winner;
 
 export const getPokemonsAsync = () => async (dispatch, getState) => {
     const localId = selectLocalId(getState());
     dispatch(fetchPokemons());
     const data = await fetch(`https://pokemon-game-6972e-default-rtdb.firebaseio.com/${localId}/pokemons.json`).then(res => res.json());
-    console.log('data', data);
     dispatch(fetchPokemonsResolve(data));
 }
 
