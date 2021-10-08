@@ -15,31 +15,41 @@ firebase.initializeApp(firebaseConfig);
 
 class Firebase {
   constructor() {
-    this.fire = firebase;
-    this.database = this.fire.database();
+    this.host = 'https://pokemon-game-6972e-default-rtdb.firebaseio.com/';
+    this.localID = null;
   }
 
-  getPokemonSoket = (cb) => {
-    this.database.ref('pokemons').on('value', (snapshot) => {
-      cb(snapshot.val());
-    })
+  token = () => localStorage.getItem('idToken');
+
+  setLocalID = (localId) => {
+    this.localID = localId;
   }
 
-  offPokemonSoket = () => {
-    this.database.ref('pokemons').off();
+  checkLocalID() {
+    if (!this.localID) {
+      throw {
+        msg: 'LocalID is doesn\'t exist',
+      }
+    }
   }
 
-  getPokemonsOnce = async () => {
-    return await this.database.ref('pokemons').once('value').then(snapshot => snapshot.val()); 
+  getPokemonSoket = async () => {
+    try {
+      this.checkLocalID();
+      const res = await fetch(`${this.host}/${this.localID}/pokemons.json?auth=${this.token()}`).then(res => res.json());
+      return res;
+    } catch (e) {
+
+    }
   }
 
-  postPokemon = ( key, pokemon) => {
-    this.database.ref(`pokemons/${key}`).set(pokemon);
-  }
+  addPokemon = async (data) => {
+    const res = await fetch(`${this.host}/${this.localID}/pokemons.json?auth=${this.token()}`,{
+        method: 'POST',
+        body: JSON.stringify(data),
+    }).then(res => res.json());
 
-  addPokemon = (data, cb) => {
-    const newKey = this.database.ref().child('pokemons').push().key;
-    this.database.ref('pokemons/' + newKey).set(data).then(() => cb);
+    return res;
   }
 
 }

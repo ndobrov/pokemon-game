@@ -51,6 +51,7 @@ export const slice = createSlice({
         clearState: state => ({
             ...state,
             selectedPokemons: {},
+            winner: false,
         }),
 
         hendlerWinner: (state, action)  => ({

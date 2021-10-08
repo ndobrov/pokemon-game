@@ -40,18 +40,19 @@ const Finish = () => {
     }
 
     const  handlerChangeSelected = (key, id) => {
-
-        setPlayer2(prevState => {
-            return prevState.reduce((acc, item) => {
-                item.selected = false;
-                if (item.id === id) {
-                    setSelectedPokemon(item);
-                    item.selected =true;
-                }
-                acc.push(item);
-                return acc;
-            }, [])
-        })
+        if (winner) {
+            setPlayer2(prevState => {
+                return prevState.reduce((acc, item) => {
+                    item.selected = false;
+                    if (item.id === id) {
+                        setSelectedPokemon(item);
+                        item.selected =true;
+                    }
+                    acc.push(item);
+                    return acc;
+                }, [])
+            })
+        }
     }
    
     const hendlerAndGameClick = () => {

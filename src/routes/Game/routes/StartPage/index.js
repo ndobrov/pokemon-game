@@ -1,19 +1,32 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPokemonsAsync,
+    selectPokemonsData, 
+    selectPokemonsLoading, 
+    selectSelectedPokemons, 
+    selectPokemon } from '../../../../store/pokemons';
+import {setPlayer1, selectPlayer1, setPlayer2, setResult } from '../../../../store/game';
+
 
 import PokemonCard from '../../../../components/PokemonCard';
 import Layout from '../../../../components/Layout';
 
-import { FireBaseContext} from '../../../../context/firebaseContext'
-import { PokemonContext} from '../../../../context/pokemonContext'
-
 import s from './style.module.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { getPokemonsAsync,
-         selectPokemonsData, 
-         selectPokemonsLoading, 
-         selectSelectedPokemons, 
-         selectPokemon } from '../../../../store/pokemons';
+
+
+const selectedPokemonsUtils = (selectedPokemons, key, pokemon) => {
+    if (selectedPokemons[key]) {
+        const copyState = {...selectedPokemons};
+        delete copyState[key];
+
+        return {
+            ...selectedPokemons,
+            [key]: pokemon,
+        }
+    }
+};
+
 
 const StartPage = () => {
 
@@ -21,21 +34,30 @@ const StartPage = () => {
     const pokemonsRedux = useSelector(selectPokemonsData);
     const selectedPokemons = useSelector(selectSelectedPokemons);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [pokemons, setPokemons] = useState({});
-    const history = useHistory();
 
     useEffect(() => {
         dispatch(getPokemonsAsync());
+        dispatch(setPlayer1({}));
+        dispatch(setPlayer2([]));
+        dispatch(setResult(null));
     }, []);
 
     useEffect(() => {
       setPokemons(pokemonsRedux);  
     }, [pokemonsRedux]);
 
+    const hendlerStartGameClick =  () => {
+        history.push('/game/board');
+    }
+
     const handlerChangeSelected = (key) => {
         const pokemon = {...pokemons[key]}
-        dispatch(selectPokemon( pokemon)) ;
+        // dispatch(setPlayer1(selectedPokemonsUtils(selectedPokemons, key, pokemon)));
+        dispatch(selectPokemon(selectedPokemonsUtils(selectedPokemons, key, pokemon)));
+        
 
         setPokemons(prevState => ({
                 ...prevState,
@@ -46,10 +68,8 @@ const StartPage = () => {
         }));
 
     };
-    const hendlerStartGameClick =  () => {
-        history.push('/game/board');
-    }
-
+    
+    console.log('selectedPokemons', selectedPokemons);
     return (
         <>
             <Layout colorBg="orange">
