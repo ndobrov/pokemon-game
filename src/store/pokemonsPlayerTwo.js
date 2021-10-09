@@ -34,7 +34,7 @@ export const {fetchPokemons, fetchPokemonsResolve, selectPokemonTwo} = slice.act
 export const selectPokemonsLoading = state => state.pokemonsPlayerTwo.isLoading;
 
 export const selectPokemonsPlayerTwo = state => state.pokemonsPlayerTwo.pokemonsPlayerTwo;
-export const pokemonsPlTwoData = state => state.pokemonsPlayerTwo.data;
+// export const pokemonsPlTwoData = state => state.pokemonsPlayerTwo.data;
 
 export const getPokemonsPlayerTwoAsync = () => async (dispatch) => {
     dispatch(fetchPokemons());

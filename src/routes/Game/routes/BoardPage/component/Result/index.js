@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 
 import YouWin from '../../assets/you-win.png';
 import YouLose from '../../assets/you-lose.png';
@@ -8,9 +9,10 @@ import s from './style.module.css';
 
 
 const Result = ({ type }) => {
-   const [url, setUrl] = useState(null);
+    const history = useHistory();
+    const [url, setUrl] = useState(null);
 
-   useEffect(() => {
+    useEffect(() => {
        switch (type) {
            case 'win':
                setUrl(YouWin);
@@ -26,6 +28,10 @@ const Result = ({ type }) => {
                setUrl(YouWin);
        }
    }, [type]);
+   
+    setTimeout(() => {
+        history.push('/game/finish')
+    }, 3000);
 
     return (
         <div className={s.result}>

@@ -6,26 +6,12 @@ import { getPokemonsAsync,
     selectPokemonsLoading, 
     selectSelectedPokemons, 
     selectPokemon } from '../../../../store/pokemons';
-import {setPlayer1, selectPlayer1, setPlayer2, setResult } from '../../../../store/game';
-
+import {setPlayer1, setPlayer2, setResult } from '../../../../store/game';
 
 import PokemonCard from '../../../../components/PokemonCard';
 import Layout from '../../../../components/Layout';
 
 import s from './style.module.css'
-
-
-const selectedPokemonsUtils = (selectedPokemons, key, pokemon) => {
-    if (selectedPokemons[key]) {
-        const copyState = {...selectedPokemons};
-        delete copyState[key];
-
-        return {
-            ...selectedPokemons,
-            [key]: pokemon,
-        }
-    }
-};
 
 
 const StartPage = () => {
@@ -55,10 +41,8 @@ const StartPage = () => {
 
     const handlerChangeSelected = (key) => {
         const pokemon = {...pokemons[key]}
-        // dispatch(setPlayer1(selectedPokemonsUtils(selectedPokemons, key, pokemon)));
-        dispatch(selectPokemon(selectedPokemonsUtils(selectedPokemons, key, pokemon)));
+        dispatch(selectPokemon(pokemon));
         
-
         setPokemons(prevState => ({
                 ...prevState,
                 [key]: {
@@ -66,10 +50,8 @@ const StartPage = () => {
                     selected: !prevState[key].selected,
                 }
         }));
-
     };
     
-    console.log('selectedPokemons', selectedPokemons);
     return (
         <>
             <Layout colorBg="orange">

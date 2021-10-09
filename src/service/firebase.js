@@ -43,8 +43,8 @@ class Firebase {
     }
   }
 
-  addPokemon = async (data) => {
-    const res = await fetch(`${this.host}/${this.localID}/pokemons.json?auth=${this.token()}`,{
+  addPokemon = async (data, localId) => {
+    const res = await fetch(`${this.host}/${localId}/pokemons.json?auth=${this.token()}`,{
         method: 'POST',
         body: JSON.stringify(data),
     }).then(res => res.json());

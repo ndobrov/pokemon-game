@@ -4,9 +4,12 @@ import { useHistory } from 'react-router';
 import PokemonCard from '../../../../components/PokemonCard';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSelectedPokemons, winnerPlayer, clearState} from '../../../../store/pokemons';
-import { pokemonsPlTwoData} from '../../../../store/pokemonsPlayerTwo';
-import { selectLocalId, addPokemonToFirebase} from '../../../../store/user';
+
+import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
+import { selectPlayer1, selectPlayer2, selectResult} from '../../../../store/game';
+import { selectLocalId} from '../../../../store/user';
+
+import firebase from '../../../../service/firebase';
  
 import s from './style.module.css';
 
@@ -14,11 +17,12 @@ import s from './style.module.css';
 const Finish = () => {
 
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
-    const pokemonsPlayer2 = useSelector(pokemonsPlTwoData);
+    const pokemonsPlayer2 = useSelector(selectPlayer2);
     const localId = useSelector(selectLocalId);
-    const winner = useSelector(winnerPlayer);
+    const winner = useSelector(selectResult);
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const [ player1, setPlayer1 ] = useState(pokemonsPlayer1);
     const [ player2, setPlayer2 ] = useState(pokemonsPlayer2);
 
@@ -30,10 +34,7 @@ const Finish = () => {
     });
 }, [pokemonsPlayer2]);
 
-
     const [selectedPokemon, setSelectedPokemon] = useState();
-
-    const history = useHistory();
 
     if ( Object.keys(player1).length === 0 || Object.keys(player2).length === 0) {
         history.replace('/game');
@@ -56,11 +57,11 @@ const Finish = () => {
     }
    
     const hendlerAndGameClick = () => {
-            // console.log('winner2', winner);
-        if(winner) {
+        if(winner === 'win') {
             alert (`add pokemon "${selectedPokemon.name}"?`)
-            addPokemonToFirebase(selectedPokemon, localId)};
-
+            selectedPokemon.selected = false;
+            firebase.addPokemon(selectedPokemon, localId);
+        };
         dispatch(clearState());
         history.push('/game/');
     }
