@@ -14,7 +14,6 @@ import { returnBoard, counterWin } from './component/Utils/index';
          
 import s from './style.module.css';
 
-
 const BoardPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -36,9 +35,38 @@ const BoardPage = () => {
     const [ player2, setPlayer2State ] =  useState([]);    
     const [ choiceCard, setChoiceCard ] = useState(null);
     const [ steps, setSteps ] = useState(0);
-    const [ game, setGame ] = useState({});
+
     const [ serverBoard, setServerBoard] = useState([0,0,0, 0,0,0, 0,0,0]);
     const [ typeResult, setTypeResult ] = useState(null);
+
+    const moveAi = ( game ) => {
+        if (game.move !== null) {
+            const idAi = game.move.poke?.id;
+        
+            setTimeout(() => {
+                setPlayer2State(prevState => prevState.map(item => {
+                    if (item.id === idAi) {
+                        return {
+                            ...item,
+                            active: true,
+                        }
+                    }
+                return item;
+                }));
+            }, 1000);
+        
+            setTimeout(() => {
+                setPlayer2State(() => game.hands.p2.pokes.map(item => item.poke));
+                setServerBoard(game.board);
+                setBoard(returnBoard(game.board));
+    
+                setSteps(prevState => {
+                    const count = prevState + 1;
+                    return count;
+                });
+            }, 1500)
+        }
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -51,62 +79,54 @@ const BoardPage = () => {
 
             setTimeout(() => {
                 const side = Math.floor(Math.random() * 2) + 1;
-                // const side = 2;
                 setStartSide(side);
+            console.log(side);    
             }, 2000);
-                
+            
             dispatch(setPlayer2(player2Request.data));
-
             setPlayer2State(() => player2Request.data.map(item => ({
                     ...item,
                     possession: 'red',
                 })));
-
         }
         fetchData();
     }, []);
-    
 
     useEffect(() => {
         if (startSide === 2) {
-        async function fetchData() {
-            let params = {
-                currentPlayer: 'p2',
-                hands: {
-                    p1: player1,
-                    p2: player2
-                },
-                move: null,
-                board: serverBoard,
+            async function fetchData() {
+                let params = {
+                    currentPlayer: 'p2',
+                    hands: {
+                        p1: player1,
+                        p2: player2
+                    },
+                    move: null,
+                    board: serverBoard,
             }; 
-        setGame(() => request.game(params)); 
-        console.log('game', game);
-
-        }
-        fetchData();
+            const game2 = await request.game(params);
+            moveAi(game2);
+            };
+            fetchData();
         }
     }, [startSide])
 
-    
     const handlerClickBoardPlate = async (position) => {
-
         if(typeof choiceCard === 'object' ) {
                 const params = {
-                    currentPlayer: startSide === 1 ? 'p1' :'p2',
+                    currentPlayer: 'p1',
                     hands: {
                         p1: player1,
                         p2: player2,
                     },
-                    move: 
-                        startSide === 1 ? {
+                    move: {
                         poke: {
                             ...choiceCard,
                         },
                         position,
-                        } : null,
+                    },
                     board: serverBoard,
-                 } 
-           
+                };
                    
             if (choiceCard.player === 1) {
                 setPlayer1State(prevState => prevState.filter(item => item.id !== choiceCard.id));
@@ -122,46 +142,16 @@ const BoardPage = () => {
                 return item;
             }));
             
-            console.log('params', params);
-
             const game = await request.game(params);
-            console.log(game);
-
             setBoard(returnBoard(game.oldBoard))
 
             setSteps(prevState => {
                 const count = prevState + 1;
                 return count;
             });
-
-            if (game.move !== null) {
-                const idAi = game.move.poke.id;
-            
-                setTimeout(() => {
-                    setPlayer2State(prevState => prevState.map(item => {
-                        if (item.id === idAi) {
-                            return {
-                                ...item,
-                                active: true,
-                            }
-                        }
-                    return item;
-                    }));
-                }, 1000);
-
-                setTimeout(() => {
-                    setPlayer2State(() => game.hands.p2.pokes.map(item => item.poke));
-                    setServerBoard(game.board);
-                    setBoard(returnBoard(game.board));
-
-                    setSteps(prevState => {
-                        const count = prevState + 1;
-                        return count;
-                    });
-                }, 1500)
-            }
+            moveAi(game);
         }
-    } 
+    }
 
     useEffect(() => {
             if (steps === 9) {
@@ -176,14 +166,13 @@ const BoardPage = () => {
                     setTypeResult('draw')
                     dispatch(setResult('draw'));
                 }
-
             }
     }, [steps])
 
     return (
         <div className={s.root}>
             { typeResult && <Result type={typeResult}/>}
-            {!choiceCard && <ArrowChoice side={startSide} />}
+            {!startSide && <ArrowChoice side={startSide} />}
             <div className={s.playerOne}>
                 <PlayerBoard 
                     player={1}

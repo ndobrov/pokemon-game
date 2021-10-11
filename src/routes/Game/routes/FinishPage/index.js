@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import PokemonCard from '../../../../components/PokemonCard';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
-import { selectPlayer1, selectPlayer2, selectResult} from '../../../../store/game';
+import { selectPlayer2, selectResult} from '../../../../store/game';
 import { selectLocalId} from '../../../../store/user';
 
 import firebase from '../../../../service/firebase';
@@ -15,7 +14,6 @@ import s from './style.module.css';
 
 
 const Finish = () => {
-
     const pokemonsPlayer1 = useSelector(selectSelectedPokemons);
     const pokemonsPlayer2 = useSelector(selectPlayer2);
     const localId = useSelector(selectLocalId);
@@ -41,7 +39,7 @@ const Finish = () => {
     }
 
     const  handlerChangeSelected = (key, id) => {
-        if (winner) {
+        if (winner === 'win') {
             setPlayer2(prevState => {
                 return prevState.reduce((acc, item) => {
                     item.selected = false;
