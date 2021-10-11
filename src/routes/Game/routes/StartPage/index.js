@@ -1,19 +1,18 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPokemonsAsync,
+    selectPokemonsData, 
+    selectPokemonsLoading, 
+    selectSelectedPokemons, 
+    selectPokemon } from '../../../../store/pokemons';
+import {setPlayer1, setPlayer2, setResult } from '../../../../store/game';
 
 import PokemonCard from '../../../../components/PokemonCard';
 import Layout from '../../../../components/Layout';
 
-import { FireBaseContext} from '../../../../context/firebaseContext'
-import { PokemonContext} from '../../../../context/pokemonContext'
-
 import s from './style.module.css'
-import { useDispatch, useSelector } from 'react-redux';
-import { getPokemonsAsync,
-         selectPokemonsData, 
-         selectPokemonsLoading, 
-         selectSelectedPokemons, 
-         selectPokemon } from '../../../../store/pokemons';
+
 
 const StartPage = () => {
 
@@ -21,22 +20,29 @@ const StartPage = () => {
     const pokemonsRedux = useSelector(selectPokemonsData);
     const selectedPokemons = useSelector(selectSelectedPokemons);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [pokemons, setPokemons] = useState({});
-    const history = useHistory();
 
     useEffect(() => {
         dispatch(getPokemonsAsync());
+        dispatch(setPlayer1({}));
+        dispatch(setPlayer2([]));
+        dispatch(setResult(null));
     }, []);
 
     useEffect(() => {
       setPokemons(pokemonsRedux);  
     }, [pokemonsRedux]);
 
+    const hendlerStartGameClick =  () => {
+        history.push('/game/board');
+    }
+
     const handlerChangeSelected = (key) => {
         const pokemon = {...pokemons[key]}
-        dispatch(selectPokemon( pokemon)) ;
-
+        dispatch(selectPokemon(pokemon));
+        
         setPokemons(prevState => ({
                 ...prevState,
                 [key]: {
@@ -44,12 +50,8 @@ const StartPage = () => {
                     selected: !prevState[key].selected,
                 }
         }));
-
     };
-    const hendlerStartGameClick =  () => {
-        history.push('/game/board');
-    }
-
+    
     return (
         <>
             <Layout colorBg="orange">
