@@ -3,7 +3,7 @@ import cn from "classnames";
 
 import s from './style.module.css'
 
-const Modal = ({isOpen, title, children, onCloseModal}) => {
+const Modal = ({isOpen, title="Log in...", children, onCloseModal}) => {
     const modalEl = useRef();
 
     useEffect(() => {

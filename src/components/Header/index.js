@@ -5,7 +5,7 @@ function Header({title, descr, onClickButton}) {
 
     const handlerClick = () => {
         // console.log('HEADER');
-        onClickButton && onClickButton('game');
+        onClickButton && onClickButton();
     }
     return (
         <header className={style.root}>

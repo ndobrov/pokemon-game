@@ -1,70 +1,25 @@
 import { useState } from 'react'; 
-import { NotificationManager } from 'react-notifications';
-import { useDispatch } from 'react-redux';
-import { getUserUpdateAsync } from '../../../store/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, selectOpenModal } from '../../../store/user';
 
-import LoginForm from '../../LoginForm';
-import Modal from '../../Modal';
-
+import ModalLogin from '../../LoginForm/components/ModalLogin';
 import Menu from "../Menu";
 import NavBar from "../Navbar";
 
 
-const loginSignupUser = async ({email, password, type}) => {
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify({
-            email,
-            password,
-            returnSecureToken: true,
-        })
-    };
-
-    switch (type) {
-        case 'signup': 
-            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
-        case 'login':   
-            return await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA9i_loG1r0zVQbAu8fK9_CUb8EzXksSIc', requestOptions).then(res => res.json());
-        default:
-            return 'I cannot login user';
-        
-    }
-}
-
 const MenuHeader = ({bgActive})  => {
-    const [isActive, setIsActive] = useState(null);
-    const [isOpenModal, setisOpenModal] = useState(false);
     const dispatche = useDispatch();
+    const isOpenModal = useSelector(selectOpenModal);
+    const [isActive, setIsActive] = useState(null);
+
     const handlerClick = () => {
         setIsActive(prevState => !prevState);
     }
 
     const hendlerClickLogin = () => {
-        setisOpenModal(prevState => !prevState)
+        dispatche(openModal(!isOpenModal));
     }
-
-    const handlerSubmitLoginForm = async (props) => {
-        const response = await loginSignupUser(props);
-            
-            if (response.hasOwnProperty('error')) {
-                NotificationManager.error(response.error.message, 'Wrong!');
-            } else {
-                if (props.type === 'signup') {
-                    const pokemonsStart = await fetch('https://reactmarathon-api.herokuapp.com/api/pokemons/starter').then(res => res.json());
-
-                    for (const item of pokemonsStart.data) {
-                        await fetch(`https://pokemon-game-6972e-default-rtdb.firebaseio.com/${response.localId}/pokemons.json?auth=${response.idToken}`, {
-                            method: 'POST',
-                            body: JSON.stringify(item)
-                        });
-                    }
-                }
-                localStorage.setItem('idToken', response.idToken);
-                NotificationManager.success('Success message');
-                dispatche(getUserUpdateAsync());   
-                hendlerClickLogin();
-            }
-    }
+    // console.log('isOpenModal2', isOpenModal);
 
     return (
         <>
@@ -78,16 +33,10 @@ const MenuHeader = ({bgActive})  => {
                 changeActive={handlerClick}
                 onClickLogin={hendlerClickLogin}
             />
-            <Modal 
-                isOpen={isOpenModal}
-                title={'Log in...'}
+            <ModalLogin>
+                isOpenMod={isOpenModal}
                 onCloseModal={hendlerClickLogin}
-                >
-                <LoginForm 
-                    isResetField={!isOpenModal}
-                    onSubmit={handlerSubmitLoginForm}
-                    />
-            </Modal>
+            </ModalLogin>
         </>
     )
 }

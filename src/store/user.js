@@ -5,11 +5,17 @@ export const slice = createSlice({
     name: 'user',
     initialState: {
         isLoading: true,
+        isOpenModalLogin: false,
         data: {},
     },
     reducers: {
-        fetchUser: () => ({
+        fetchUser: state => ({
+            ...state,
             isLoading: true,
+        }),
+        openModal: (state, action) => ({
+            ...state,
+            isOpenModalLogin: action.payload,
         }),
         updateUser: (state, action) => ({
             isLoading: false,
@@ -22,12 +28,13 @@ export const slice = createSlice({
     }
 });
 
-export const {fetchUser,  updateUser, removeUser} = slice.actions;
+export const {fetchUser,  updateUser, removeUser, openModal} = slice.actions;
 
 export const selectUserLoading = state => state.user.isLoading;
 export const selectUser = state => state.user.data;
 export const selectLocalId = state => state.user.data?.localId;
-
+export const selectOpenModal = state => state.user.isOpenModalLogin;
+console.log();
 
 export const getUserUpdateAsync = () => async (dispatch) => {
     const idToken = localStorage.getItem('idToken');
