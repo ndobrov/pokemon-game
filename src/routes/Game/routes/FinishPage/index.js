@@ -88,7 +88,7 @@ const Finish = () => {
                         onClick={hendlerAndGameClick}
                         disabled={Object.keys(pokemonsPlayer1).length > 5}
                         >
-                        AND GAME
+                        END GAME
             </button>
             <div className={s.flex}>{}
                 {

@@ -54,7 +54,9 @@ const StartPage = () => {
     
     return (
         <>
-            <Layout colorBg="orange">
+            <Layout 
+                colorBg="orange"
+                description="Choose 5 cards">
                 <button  className={s.buttonWrap}
                     onClick={hendlerStartGameClick}
                     disabled={Object.keys(selectedPokemons).length < 5}

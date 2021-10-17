@@ -4,10 +4,10 @@ import PokemonCard from '../../../../../../components/PokemonCard';
 import cn from 'classnames';
 import s from './style.module.css';
 
-const PlayerBoard = ({player, cards, onClickCard, className, minimize="true"}) => {
+const PlayerBoard = ({player, cards, onClickCard, className, minimize="true", disabled}) => {
 
     const [isSelected, setisSelected] = useState(null);
-    // console.log('cards', cards)
+
     return (
         <>
             {
@@ -16,8 +16,11 @@ const PlayerBoard = ({player, cards, onClickCard, className, minimize="true"}) =
                         [s.selected]: isSelected === item.id
                     })}
 
-                    key={item.id}
+                    key={item.id + Math.random(0)*10}
                     onClick={() => {
+                        if (disabled) {
+                            return;
+                        }
                         setisSelected(item.id);
                         onClickCard && onClickCard({
                             player,

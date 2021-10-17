@@ -42,7 +42,7 @@ const BoardPage = () => {
     const moveAi = ( game ) => {
         if (game.move !== null) {
             const idAi = game.move.poke?.id;
-        
+            
             setTimeout(() => {
                 setPlayer2State(prevState => prevState.map(item => {
                     if (item.id === idAi) {
@@ -67,7 +67,6 @@ const BoardPage = () => {
             }, 1500)
         }
     }
-
     useEffect(() => {
         async function fetchData() {
             const boardRequest = await request.getBoard();
@@ -172,7 +171,7 @@ const BoardPage = () => {
     return (
         <div className={s.root}>
             { typeResult && <Result type={typeResult}/>}
-            {!startSide && <ArrowChoice side={startSide} />}
+            { steps===0 && <ArrowChoice side={startSide} />}
             <div className={s.playerOne}>
                 <PlayerBoard 
                     player={1}
@@ -196,11 +195,11 @@ const BoardPage = () => {
                     )) : <span> No item</span>
                 }            
             </div>
-            <div className={s.playerTwo}>
+            <div className={s.playerTwo} disabled={true}>
                 <PlayerBoard 
                     player={2}
                     cards={player2}
-                    onClickCard={(card) => setChoiceCard(card)}
+                    disabled={true}
                     />
             </div>
         </div>

@@ -16,11 +16,23 @@
 .rightSide {
     animation: none;
     transform: rotateY(0deg);
+    top: 5%;
+    left: 81%;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 40px solid yellow;
+    margin: -10px 0 0 -60px;
 }
 
 .leftSide {
     animation: none;
     transform: rotateY(180deg);
+    top: 5%;
+    left: 27%;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 40px solid yellow;
+    margin: -10px 0 0 -60px;
 }
 
 @keyframes spin {
