@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PokemonCard from '../../../../components/PokemonCard';
 
-import { selectSelectedPokemons, clearState} from '../../../../store/pokemons';
+import { selectSelectedPokemons, clearState } from '../../../../store/pokemons';
 import { selectPlayer2, selectResult} from '../../../../store/game';
-import { selectLocalId} from '../../../../store/user';
+import { selectLocalId, removeUser} from '../../../../store/user';
 
 import firebase from '../../../../service/firebase';
  

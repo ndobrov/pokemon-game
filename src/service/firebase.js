@@ -33,6 +33,7 @@ class Firebase {
     }
   }
 
+  
   getPokemonSoket = async () => {
     try {
       this.checkLocalID();
