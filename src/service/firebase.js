@@ -24,7 +24,7 @@ class Firebase {
   setLocalID = (localId) => {
     this.localID = localId;
   }
-
+        
   checkLocalID() {
     if (!this.localID) {
       throw {
@@ -33,15 +33,15 @@ class Firebase {
     }
   }
 
-  
-  getPokemonSoket = async () => {
+  getPokemonSoket = async (localId) => {
     try {
-      this.checkLocalID();
-      const res = await fetch(`${this.host}/${this.localID}/pokemons.json?auth=${this.token()}`).then(res => res.json());
+      // this.checkLocalID();
+      const res = await fetch(`${this.host}/${localId}/pokemons.json?auth=${this.token()}`).then(res => res.json());
       return res;
     } catch (e) {
-
+        console.log(e);
     }
+    // console.log(this.token());
   }
 
   addPokemon = async (data, localId) => {
@@ -52,7 +52,6 @@ class Firebase {
 
     return res;
   }
-
 }
 
 const FirebaseClass = new Firebase();

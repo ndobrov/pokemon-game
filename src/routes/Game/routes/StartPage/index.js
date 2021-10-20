@@ -10,6 +10,7 @@ import {setPlayer1, setPlayer2, setResult } from '../../../../store/game';
 
 import PokemonCard from '../../../../components/PokemonCard';
 import Layout from '../../../../components/Layout';
+// import firebase from '../../../../service/firebase';
 
 import s from './style.module.css'
 
@@ -26,6 +27,7 @@ const StartPage = () => {
 
     useEffect(() => {
         dispatch(getPokemonsAsync());
+        // firebase.getPokemonSoket();
         dispatch(setPlayer1({}));
         dispatch(setPlayer2([]));
         dispatch(setResult(null));

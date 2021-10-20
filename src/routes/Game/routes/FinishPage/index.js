@@ -6,7 +6,7 @@ import PokemonCard from '../../../../components/PokemonCard';
 
 import { selectSelectedPokemons, clearState } from '../../../../store/pokemons';
 import { selectPlayer2, selectResult} from '../../../../store/game';
-import { selectLocalId, removeUser} from '../../../../store/user';
+import { selectLocalId} from '../../../../store/user';
 
 import firebase from '../../../../service/firebase';
  
